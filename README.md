@@ -81,3 +81,7 @@ bash mac_cleanup.sh --uninstall # 取消自动清理
 每次推送代码时，`.github/workflows/check.yml` 会自动：
 1. 用 ShellCheck 检查所有脚本有没有错误
 2. 在 macOS 机器上做语法检查，并以 `--dry-run` 模式试运行（不删除任何东西）
+
+## 许可证
+
+本项目使用 [MIT 许可证](LICENSE)：可以自由使用、修改和分发，请保留版权声明。脚本按「原样」提供，作者不对使用后果负责。
