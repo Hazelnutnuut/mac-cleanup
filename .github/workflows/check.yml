@@ -1,0 +1,35 @@
+name: Check scripts
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run ShellCheck
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq shellcheck
+          shellcheck -S error mac_cleanup.sh scripts/*.sh
+
+  macos-dry-run:
+    name: Dry run on macOS
+    runs-on: macos-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax check
+        run: |
+          for f in mac_cleanup.sh scripts/*.sh; do
+            bash -n "$f" && echo "OK  $f"
+          done
+      - name: Dry run (scan only, deletes nothing)
+        run: bash mac_cleanup.sh --dry-run
+      - name: Rank apps
+        run: bash scripts/rank_apps.sh
+      - name: Big folders
+        run: bash scripts/big_folders.sh 10
